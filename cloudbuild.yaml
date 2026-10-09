@@ -1,0 +1,30 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -t
+      - europe-west1-docker.pkg.dev/$PROJECT_ID/deploy-proof/deploy-proof:$COMMIT_SHA
+      - .
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - europe-west1-docker.pkg.dev/$PROJECT_ID/deploy-proof/deploy-proof:$COMMIT_SHA
+  - name: gcr.io/cloud-builders/gcloud
+    args:
+      - run
+      - deploy
+      - deploy-proof
+      - --image=europe-west1-docker.pkg.dev/$PROJECT_ID/deploy-proof/deploy-proof:$COMMIT_SHA
+      - --region=europe-west1
+      - --min-instances=0
+      - --max-instances=2
+      - --cpu=1
+      - --memory=512Mi
+      - --port=8080
+      - --allow-unauthenticated
+      - --quiet
+
+options:
+  machineType: E2_STANDARD_2
+  logging: CLOUD_LOGGING_ONLY
+  substitutionOption: MUST_MATCH

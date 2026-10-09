@@ -1,0 +1,12 @@
+.git
+README.md
+cloudbuild.yaml
+.DS_Store
+**/.DS_Store
+node_modules
+npm-debug.log*
+.env
+.env.*
+.idea
+.vscode
+*.swp
